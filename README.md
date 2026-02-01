@@ -16,10 +16,6 @@ The architecture separates **control flow** from **data flow**, ensuring better 
 
 ---
 
-The architecture separates **control flow** from **data flow**, ensuring better observability and operational control.
-
----
-
 ## High-Level Flow
 
 1. Amazon EventBridge triggers the pipeline on a schedule  
