@@ -1,0 +1,49 @@
+{
+  "Comment": "Self-Healing & Cost-Aware Data Pipeline",
+  "StartAt": "PreValidation",
+  "States": {
+    "PreValidation": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:pre_validation",
+      "Next": "RunGlueJob",
+      "Retry": [{
+        "ErrorEquals": ["States.ALL"],
+        "MaxAttempts": 2
+      }]
+    },
+
+    "RunGlueJob": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "nav-etl-job"
+      },
+      "Next": "PostValidation"
+    },
+
+    "PostValidation": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:post_validation",
+      "Next": "CostCheck"
+    },
+
+    "CostCheck": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:REGION:ACCOUNT_ID:function:cost_check",
+      "Next": "UpdateState"
+    },
+
+    "UpdateState": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::dynamodb:putItem",
+      "Parameters": {
+        "TableName": "pipeline_execution_state",
+        "Item": {
+          "run_date": { "S.$": "$.run_date" },
+          "status": { "S": "SUCCESS" }
+        }
+      },
+      "End": true
+    }
+  }
+}
