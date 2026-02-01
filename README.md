@@ -10,7 +10,7 @@ It is built to **fail fast**, **self-heal through controlled retries**, and **pr
 
 ## Architecture
 
-![[Architecture](architecture/architecture.png)](https://github.com/SOURAV416/self-healing-cost-aware-pipeline/blob/bce5e2627d870db1797b52fd64b638558e254670/2nd%20final.png)
+![[Architecture](architecture/architecture.png)](https://github.com/SOURAV416/self-healing-cost-aware-pipeline/blob/2ac32a8d08975a149e00432271e2a1c14e049e31/pipiline_architecture.png)
 
 The architecture separates **control flow** from **data flow**, ensuring better observability and operational control.
 
